@@ -8,6 +8,12 @@
     "start": "concurrently \"npm --prefix backend run start\" \"npm --prefix frontend run dev\""
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "autoprefixer": "^10.5.0",
+    "concurrently": "^8.2.2",
+    "postcss": "^8.5.14",
+    "tailwindcss": "^4.3.0"
+  },
+  "dependencies": {
+    "lucide-react": "^1.16.0"
   }
 }
