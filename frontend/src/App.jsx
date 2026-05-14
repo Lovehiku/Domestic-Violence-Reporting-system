@@ -74,7 +74,7 @@ function ProtectedRoute({ user, onAuth, children }) {
 function AuthPage({ type, onAuth }) {
   const navigate = useNavigate();
   const isLogin = type === "login";
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "victim" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", role: "victim", remember: false, privacyAgreement: false, anonymous: false });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -101,59 +101,151 @@ function AuthPage({ type, onAuth }) {
   };
 
   return (
-    <main className="auth-shell">
-      <section className="card auth-card">
-        <h1>SafeHaven Support</h1>
-        <p className="muted">{isLogin ? "Welcome back. Access your secure workspace." : "Create your secure account."}</p>
-        <form onSubmit={submit}>
-          {!isLogin && (
-            <label>
-              Full Name
-              <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-            </label>
-          )}
-          <label>
-            Email
-            <input
-              type="email"
-              required
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              autoComplete="email"
-            />
-          </label>
-          <label>
-            Password
-            <input
-              type="password"
-              required
-              minLength={8}
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              autoComplete={isLogin ? "current-password" : "new-password"}
-            />
-          </label>
-          {!isLogin && (
-            <label>
-              Role
-              <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}>
-                <option value="victim">Victim</option>
-                <option value="support_staff">Support Staff</option>
-                <option value="admin">Admin</option>
-              </select>
-            </label>
-          )}
-          {error && <p className="error">{error}</p>}
-          <button disabled={loading} className="primary" type="submit">
-            {loading ? "Please wait..." : isLogin ? "Log In" : "Create Account"}
-          </button>
-        </form>
-        <p className="muted small">
-          {isLogin ? "No account yet? " : "Already have an account? "}
-          <Link to={isLogin ? "/signup" : "/login"}>{isLogin ? "Sign up" : "Log in"}</Link>
-        </p>
-      </section>
-    </main>
+    <div className="auth-shell">
+      <div className="auth-topbar">
+        <span>IMMEDIATE ASSISTANCE REQUIRED? CALL 911 OR LOCAL EMERGENCY SERVICES</span>
+      </div>
+      <header className="auth-header">
+        <div className="auth-brand">SAFETYLINK</div>
+        <nav className="auth-nav">
+          <a href="/" className="auth-nav-link">HOME</a>
+          <a href="/" className="auth-nav-link">SUPPORT SERVICES</a>
+        </nav>
+        <div className="auth-actions">
+          <Link to="/login" className="auth-action-link">Login</Link>
+          <Link to="/signup" className="auth-action-button">Sign Up</Link>
+        </div>
+      </header>
+
+      <main className="auth-main">
+        <section className="auth-panel auth-panel-left">
+          <div className="auth-card auth-card-hero">
+            <div className="auth-card-badge">END-TO-END ENCRYPTED</div>
+            <h2>{isLogin ? "Your Secure Hub for Safety." : "Secure your journey to safety."}</h2>
+            <p>
+              {isLogin
+                ? "Empowering incident response with institutional reliability and empathetic support."
+                : "Join SafetyLink to access specialized support services, track your incident reports securely, and connect with trained professionals in a private, protected environment."
+              }
+            </p>
+
+            {!isLogin && (
+              <div className="auth-info-grid">
+                <div className="info-tile">
+                  <strong>Data Privacy</strong>
+                  <p>Your identity and records are protected by bank-level encryption.</p>
+                </div>
+                <div className="info-tile">
+                  <strong>Expert Support</strong>
+                  <p>Immediate connection to specialized case management teams.</p>
+                </div>
+              </div>
+            )}
+
+            <div className={isLogin ? "hero-visual hero-visual-login" : "hero-visual hero-visual-signup"}>
+              <div className="hero-overlay" />
+              <div className="hero-copy">
+                <span>{isLogin ? "Secure workspace" : "Welcome to SafetyLink"}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="auth-panel auth-panel-right">
+          <div className="auth-card auth-card-form">
+            <div className="form-headline">
+              <h3>{isLogin ? "Welcome Back" : "Create Account"}</h3>
+              <p>{isLogin ? "Log in to manage your safety reports." : "Step 1 of 2: Basic Information"}</p>
+            </div>
+
+            <form onSubmit={submit} className="auth-form">
+              {!isLogin && (
+                <label className="field-group">
+                  <span>Full Name</span>
+                  <input
+                    type="text"
+                    value={form.name}
+                    required
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    placeholder="John Doe"
+                  />
+                </label>
+              )}
+
+              <label className="field-group">
+                <span>Email Address</span>
+                <input
+                  type="email"
+                  value={form.email}
+                  required
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder={isLogin ? "name@organization.com" : "name@example.com"}
+                />
+              </label>
+
+              <label className="field-group">
+                <div className="field-label-row">
+                  <span>Password</span>
+                  {isLogin ? <a href="/" className="field-link">Forgot Password?</a> : null}
+                </div>
+                <input
+                  type="password"
+                  value={form.password}
+                  required
+                  minLength={8}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  placeholder="••••••••"
+                />
+                {!isLogin && <span className="field-hint">Minimum 8 characters with at least one symbol.</span>}
+              </label>
+
+              {isLogin ? (
+                <label className="checkbox-group">
+                  <input
+                    type="checkbox"
+                    checked={form.remember}
+                    onChange={(e) => setForm({ ...form, remember: e.target.checked })}
+                  />
+                  <span>Remember this device</span>
+                </label>
+              ) : (
+                <>
+                  <label className="checkbox-group">
+                    <input
+                      type="checkbox"
+                      checked={form.privacyAgreement}
+                      onChange={(e) => setForm({ ...form, privacyAgreement: e.target.checked })}
+                    />
+                    <span>I agree to the <a href="/" className="inline-link">Privacy Policy</a> and terms of service.</span>
+                  </label>
+                  <label className="checkbox-group">
+                    <input
+                      type="checkbox"
+                      checked={form.anonymous}
+                      onChange={(e) => setForm({ ...form, anonymous: e.target.checked })}
+                    />
+                    <span>I want to report anonymously</span>
+                  </label>
+                </>
+              )}
+
+              {error && <div className="auth-error"><span>⚠️</span>{error}</div>}
+
+              <button type="submit" className="primary auth-submit-btn" disabled={loading}>
+                {loading ? (isLogin ? "Signing in..." : "Creating account...") : (isLogin ? "SIGN IN" : "CREATE MY SECURE ACCOUNT")}
+              </button>
+            </form>
+
+            <div className="auth-switch">
+              <span>{isLogin ? "New to SafetyLink?" : "Already have an account?"}</span>
+              <Link to={isLogin ? "/signup" : "/login"} className="auth-switch-link">
+                {isLogin ? "CREATE AN ACCOUNT" : "Log in here"}
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
 
