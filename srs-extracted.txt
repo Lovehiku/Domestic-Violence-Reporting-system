@@ -1,0 +1,853 @@
+ADDIS ABABA INSTITUTE OF TECHNOLOGY
+School of information technology and engineering
+Domestic violence reporting and support system
+Software requirement specification(srs)
+Group members               id
+1. Ekram Shemsu                     UGR/0903/15
+2. Entisar Elias                       UGR/4241/15
+3. Hikma Oumer                      UGR/6192/15
+4. Teyiba Aman                       UGR/7407/15
+5. Yeabsira Abiy                      UGR/6911/15
+Submission Date: 11/09/2024
+Submitted To: Mr. Aderaw
+Revision History
+Date
+Description
+Author
+Comments
+11/02/2024
+Version 1
+All team members
+Initial draft
+11/09/2024
+Version 2
+All team members
+Final draft
+Document Approval
+The following Software Requirements Specification has been accepted and approved by the following:
+Signature
+Printed Name
+Title
+Date
+Mr.Aderaw
+Table of Contents
+DOCUMENT APPROVAL……………………………………..….…….II
+LIST OF TABLES………………………………………………………..IV
+LIST OF FIGURES……………………………………………………….V
+DEFINITIONS, ACRONYMS, AND ABBREVIATIONS………………VI
+DECLARATION……………………………………………………….…VII
+1.INTRODUCTION.......................….....................................…………8
+1.1Purpose....................................….....................................………….8
+1.2Scope.......................................…........................................………..9
+1.3Overview..................................….......................................………..9
+2. GENERAL DESCRIPTION..............................................……….11
+2.1 Product Perspective........................................................………….11
+2.2 Product Functions…...................................................…………….11
+2.3 User characteristics......................................................……………12
+2.4 General Constraints...................................................……….…….13
+3. SPECIFIC REQUIREMENTS.……..............................…………14
+3.1 External Interface Requirements….………………………………14
+3.1.1 User Interfaces………………….…………………………...14
+3.1.2 Hardware Interface…………………………………….……15
+3.1.3 Software Interfaces……………………………………….…15
+3.1.4 Communications Interfaces…………………………………18
+3.2 Functional Requirements………………………………………….19
+3.3 Use Cases………………………………………………………….26
+3.3.1 Signing Up…………………………………………………..28
+3.3.2 Login Page…………………………………………………..28
+3.3.3 View Victim Dashboard…..…………………………….…..29
+3.3.4 Provide Feedback……………………………………………29
+3.3.5View Sign In Report ……………..….……………………….30
+3.3.6 Provide Support…………………………..……………….…30
+3.4 Non-Functional Requirements…………………….…………….…31
+3.4.1 Performance…………………………………..……………...31
+3.4.2 Reliability…………………………………………….………31
+3.4.3 Availability……………………………….………….……….31
+3.4.4 Security……………………………………………….………31
+3.4.5 Maintainability.……………………………………….………32
+3.4.6 Portability….………………………………………….………32
+3.5 Inverse Requirements……………………………………….………32
+3.6Design Constraints……………………….…………………..………33
+3.7 Logical Database Requirements……….………………….….……..33
+3.7.1 User Table…………………………………………….………33
+3.7.2 Support System Table………………….……………….…….34
+3.7.3Akk Women and Child Office Issues Table..…………………34
+3.8 Other Requirements………………..……………………………….35
+4. Change Management Process……..………………………………..37
+REFERANCE…………………………..……………………………38
+APPENDICES……………………….……………………………………39
+Appendix I…………………………..………………………………….39
+Appendix II………………………..……………………………………40
+LIST OF TABLES
+Table 1:UI-Description…………………………………………..14
+Table 2 :FR-01-Creat profile…………………………………….19
+Table 3: FR-02-Login…………………………………………....20
+Table 4: FR-03-Report Incident……….…………………………20
+Table 5: FR-04-Access Resources……………………….………21
+Table 6: FR-05-Track Report Status….………………….……....22
+Table 7: FR-06-Request Support………………………….…..…23
+Table 8: FR-07-View Case History……………………….…..…23
+Table 9: FR-08-Edit Profile……………………………….……..24
+Table 10: FR-09-Administrator Access…………………….……25
+Table 11: UC01-Signing Up…………………….……..….……..29
+Table 12: UC02-Login Page…………………….……..….……..30
+Table 13: UC03-View Victim Dashboard……………….……….30
+Table 14: UC04-Provide Feedback……………….………….…..31
+Table 15: UC05-View Sign In Report………….…..……….…….31
+Table 16: UC06-Provide Support………………….……..………32
+Table 17: DB01-User Table………………………………..…….35
+Table 18: DB02-Support System Table……………...……..……36
+Table 19: DB03-Arada Kefele Ketema Women
+and Child Office Issues Table……………..…….…….36
+LIST OF FIGURES
+Figure 1: Use Case for SafeHaven platform…………………………..26
+Figure 2:Arada Kefele Ketema Women and Child Office…………….41
+DEFINATION,ACRONYMS AND ABBREVATIONS
+Term
+Description
+UC
+Use case
+DB
+Data Base
+UI
+User Interface
+FR
+Functionality Requirement
+SDKs
+Software Development Kits
+WCAG
+Web Content Accessibility Guidelines
+HTTPS
+Hypertext Transfer Protocol Secure
+ID
+Identity Document
+SMS
+Short Message Service
+PIN
+personal Identification Number
+GPS
+Global positioning system
+DVRSS
+Domestic Violence Reporting and Support System
+DECLARATION
+We declare that this written submission represents our ideas in our own words and where others’ ideas or words have been included. We have adequately cited and referenced the original sources. We also declare that we have adhered to all principles of academic honesty and integrity and have not misrepresented or fabricated or falsified any idea/data/fact/source in our submission. We understand that any violation of the above will be cause for disciplinary action by the Institute and can also evoke penal action from the sources which have thus not been properly cited or from whom proper permission has not been taken when needed.
+Group No18 | Team  Date: November 2024
+1.INTRODUCTION
+This document outlines the Software Requirements Specification (SRS) for a Domestic Violence Reporting and Supporting System aimed at assisting people in Ethiopia who are experiencing risk of domestic violence. Our System called Safe Haven which is a web-based platform designed to facilitate streamlined reporting and support for individuals affected by domestic violence. This system, intended for use by community support organizations and individuals in need, will enhance communication, provide resources, and ensure swift and secure responses through a user-friendly interface.
+The SafeHaven platform will support users by offering a confidential environment where they can report incidents of domestic violence, request assistance, access information on legal and medical resources, and connect with support services. It will include features such as appointment scheduling for consultations, contact options, and personalized support services. The platform will also offer users access to information on protective measures, shelter services, and medical and legal aid.
+The SRS document serves as the foundation for both front-end and back-end development, detailing the system's functional and non-functional requirements to ensure all user needs are addressed effectively. This document will outline system specifications, including a use case diagram that clarifies the interactions between users, support agents, and administrators. By defining the scope and functionality of the system, the SRS will guide quality assurance processes and allow users and support agents to validate that SafeHaven meets its defined requirements and objectives..
+Purpose
+This Software Requirement Specification document has been written to advance the ideas that have been presented in the project proposal. Although it may be referred to by less technically informed users, it remains a system requirement specification document. Therefore, the primary purpose of this document is to serve as the requirement list to aid in the design and implementation processes of the project.
+As is typical for SRS documents, this file does not contain information about any design and implementation details. Any specified figures are mere placeholders and are subject to change. For concrete details regarding the design and architecture, the design documentation is recommended. Its functional requirements describe all the necessary features that the complete project will have. There may be several revisions of this document in the future, so the reader is advised to refer to the latest available version as it will best reflect the final product.
+Scope
+The scope of this project is better outlined in the functional requirements. This section will merely serve as a summary of the facts detailed in the coming sections. SafeHaven is a web application that aims to provide platform where people who are victims of different violence reports their victims and get support.
+Key goals for the Domestic Violence Reporting and Supporting platform will include:
+incident Reporting System: For individuals (victims, witnesses, or concerned individuals) to report incidents of domestic violence involving women and children.
+Support Resource Portal: A set of online tools and resources for victims, such as emergency contacts, legal information, healthcare services, shelters, and counseling
+Case Management System: For law enforcement agencies and social workers to monitor the progress of cases and ensure appropriate action is taken.
+User Access Control: The system will have different access levels for victims, social workers, law enforcement, and system administrators to maintain security and confidentiality.
+The Limitations of the project:
+It addresses only a part of community capable of using internet
+It can’t be accessed offline since it is a web application.
+The system may experience delays in processing reports if internet connectivity is unstable or if there is high traffic on the platform.
+The platform cannot address urgent or immediate situations that require in-person intervention or emergency information.
+overview
+This document is organized into three major categories. A brief description of the information each covers follows.
+The first major section contains the general description of the requirement specification. The general factors that could affect the product and its requirements have been listed. A brief outline of the product function is followed by a user characteristics section that describes the projected users whose needs could affect the specific requirements down the line. A general constraints sub-section is also presented. It captures the non-functional requirements in informal language and is mostly an extension of the Non-functional Requirements section further into the document.
+The second major section contains the most important part of a typical SRS, the actual specific requirements. This section opens with a brief look into the external interface requirements such as the user interfaces, hardware interfaces and software interfaces. A detailed description of the functional requirements is accompanied by use-cases. A more detailed explanation of the non-functional requirements comes next followed by inverse requirements that have been deemed useful. The section closes out with design constraints, logical database necessities and other miscellaneous requirements.
+The last section describes the process that would be used to update this SRS in the future. The team is under the assumption that the requirements will inevitably change in the future and has decided to write a complete procedure for accepting and inducting these requirement changes into the project. The readers are implored to review this section for details regarding requirement changes.
+2.GENERAL DESCRIPTION
+product perspective
+The Domestic Violence Reporting and Supporting System (DVRSS) is web-based application designed to address the critical issue of domestic violence in Ethiopia. This system aims to provide a secure and accessible platform for victims to report incidents, access support services, and engage with law enforcement and social workers. By recognizing the unique cultural, legal, and technological landscape of Ethiopia, the DVRSS seeks to empower individuals in both urban and rural areas, ensuring that all victims have the resources they need to seek help and support.
+The DVRSS will feature user-friendly interfaces for various stakeholders, including victims, social workers, and law enforcement personnel, promoting ease of use and accessibility. With functionalities such as secure messaging, and comprehensive resource directories, the system will enhance the overall experience for users while maintaining strict confidentiality and data protection standards. By fostering collaboration among service providers and ensuring a responsive support network, the DVRSS aims to create a safer environment for individuals affected by domestic violence.
+Product Functions
+The DVRSS encompasses a range of functionalities tailored to meet the diverse needs of its users.
+Incident Reporting
+One of the primary functions of the system is incident reporting. Victims of domestic violence can report incidents either anonymously or with identification, depending on their comfort level and safety concerns. The system allows users to provide detailed descriptions of incidents, including the type of violence experienced, location, and details about the involved parties. This feature is crucial as it not only facilitates accurate reporting but also helps authorities understand the context of each case. Furthermore,
+the capability for victims to upload supporting documentation or evidence—such as photos or videos—enhances the credibility of reports and aids in subsequent investigations.
+Support Resource Portal
+In addition to reporting capabilities, the DVRSS will feature a robust support resource portal. This portal will serve as a comprehensive directory of available services tailored specifically for victims of domestic violence. It will include contact information for local authorities, healthcare providers, legal professionals, and shelters, ensuring that victims can easily access vital resources. Emergency help seeker users issue will be prominently displayed at the top of the system, allowing users to seek immediate assistance when needed. By providing a centralized platform for support services, the DVRSS aims to reduce barriers to accessing help.
+Case Management
+Effective case management is another critical component of the DVRSS. Law enforcement officers and social workers will have access to reported cases, enabling them to update the status of investigations or interventions seamlessly. The system will incorporate alerts and notifications that inform stakeholders when new reports are submitted or when action is required. This functionality ensures timely responses to incidents and fosters collaboration among various agencies involved in supporting victims.
+User Management and Access Control
+To maintain confidentiality and ensure user safety, the DVRSS will implement a robust user management and access control system. Different roles will be defined within the system, including victims, social workers, law enforcement personnel, and administrators. Access to sensitive information will be restricted based on user roles, safeguarding the privacy of victims while allowing authorized personnel to perform their duties effectively.
+User Characteristics
+The DVRSS is designed with a diverse user base in mind, encompassing several primary groups:
+Victims: The system primarily targets victims of domestic violence, Specially people who may be unfamiliar with technology. Many users may have access to mobile phones or public kiosks but require an interface that is simple and easy to navigate. The design will prioritize confidentiality and security, ensuring that victims feel safe when using the platform.
+Social Workers and Support Staff: Social workers and support staff are t professionals who will interact with the DVRSS to manage cases, offer support, and track progress. They will require more advanced
+functionalities to update case information effectively and communicate with other stakeholders involved in victim support.
+Law Enforcement: Law enforcement officers will need secure access to incident reports and updates for investigation purposes. The DVRSS must provide them with the necessary tools to access sensitive data while maintaining stringent security measures to protect victim information.
+System Administrators: System administrators play a crucial role in managing the overall health of the DVRSS. They will be responsible for overseeing system settings, user roles, and ensuring that all functionalities operate smoothly. Administrators will require full access to all system features to perform their duties effectively.
+General Constraints
+The design and development of the DVRSS will be subject to several constraints that must be carefully considered:
+Regulatory Policies: Compliance with local and international laws regarding data privacy is paramount, particularly concerning the protection of minors and victims of domestic violence. The system must adhere to these regulations to ensure that it operates within legal frameworks while safeguarding user information.
+Hardware Limitations: Given that many users may rely on low-resource devices such as older smartphones or have limited internet connectivity, the DVRSS must be designed to function efficiently on these platforms. This consideration is essential for ensuring accessibility for a wide range of users, particularly those in rural areas.
+Interface with Other Applications: To facilitate seamless coordination and data sharing among various agencies, the DVRSS may need to integrate with existing government databases or other social service management systems. This requirement necessitates careful planning during development to ensure compatibility with external systems.
+Assumptions and Dependencies
+Several assumptions underpin the successful implementation of the DVRSS:
+Internet Access: It is assumed that internet access is generally available in urban areas and that users can access mobile phones even in rural locations.
+Availability of Support Services: The system assumes that legal and social support services will be available to assist victims effectively.
+Cooperation from Local Authorities: Successful functioning of the DVRSS depends on the cooperation of local law enforcement and healthcare providers in responding promptly to reported incidents.
+Stable Operating Systems: The system will rely on stable operating systems for mobile platforms (Android and iOS) to ensure that users can access the platform without technical difficulties.
+Specific Requirements
+External Interface Requirements
+user interface
+Table 1:UI-Description
+UI Element
+Description
+Home Page
+A welcoming and easy-to-navigate landing page.
+Navigation Menu
+Includes links to Home, Report Incident,Support Services, Resources, and Contact-us.
+Login/Sign-up Buttons
+Options for users to log in or create a new account.
+Hero Section
+Displays the mission and services with a welcome message.
+Report Incident Page
+A form where users can report domestic violence incidents.
+Incident Details
+Text areas for describing the incident.
+Date And Time
+Date and time pickers for the incident details.
+Location
+Input fields for address or location details.
+Witness Information
+Optional fields for witness details.
+Submit Button
+Button to submit the report.
+Save As Draft Button
+Button to save the report and complete it  later.
+Support Services Page
+A page listing various categories of support  services.
+Service Categories
+List categories like Counseling, Legal Aid, Shelters, etc.
+Service Listings
+Detailed listings of available services with contact information.
+Resources Page
+Provides informational content for users to learn about abuse, legal rights, and self-help.
+Articles And Guides
+Content about abuse recognition, legal rights, and self-help tips.
+Search Bar
+Allows users to search for specific resources.
+Contact Form
+Fields for name, email, subject, and message.
+Submit Button
+Sends the user's inquiry to the support team.
+3.1.2.Hardware Interfaces
+The hardware interface for the domestic violence report and service system is designed to be straightforward and easy to implement. The System supports mobile devices as the primary hardware, with optional support for wearable like smartwatches. Connectivity is maintained via Wi-Fi or cellular networks (4G/5G, with 3G fallback), and GPS is used for location tracking only when necessary. Security measures include HTTPS for encrypted communication and simple authentication (PIN or password) for user access. To ensure compatibility, the system integrates with common devices using standard libraries and SDKs, keeping the interface accessible and manageable for new developers.Key considerations include minimal battery usage, straightforward updates, and secure data storage to protect user privacy.
+3.1.3.Software Interface Description
+Software Interaction Overview:
+Users will interact with the system through a secure, web-based application designed to facilitate the reporting of domestic violence incidents and provide access to support services. The system will include user-friendly interfaces for both victims seeking assistance and administrators managing reports and resources.
+1.Software Interface Components:
+User Interface Components:
+Web Pages: User-facing pages for reporting incidents,accessing support services, and finding resources.
+Forms: Various forms for incident reporting, user registration,and contact.
+Buttons: Action buttons for submission, navigation, and interaction.
+Navigation Menus: Menus for easy navigation across different sections of the website.
+Modals: Pop-up dialog for confirmation messages, additional information, and alerts.
+Admin Interface Components:
+Dashboard: Overview of reports, user activities, and system analytic
+Report Management: Interface for viewing, filtering, and managing submitted reports.
+User Management: Interface for managing user accounts and permissions.
+Resource Management: Interface for adding, updating, and removing resources and support services
+2.Design Mockups:
+We would typically create design mock ups using tools like Figma, Sketch, or Adobe XD to provide visual representations of the interface layout. These mock ups should illustrate the layout of the main pages, forms, and admin dashboard.
+3.User Experience Requirements:
+Design Principles:
+Security: Prioritize user data privacy and secure communication channels.
+Usability: Ensure the interface is intuitive and accessible to all users.
+Consistency: Maintain consistent design elements across the application. Accessibility: Adhere to WCAG guidelines to support users with disabilities.
+Usability Guidelines:
+Responsive Design: Ensure the interface is responsive and functional on various devices (desktops, tablets, smart phones).
+Clear Navigation: Provide clear and easy-to-use navigation menus.
+Immediate Feedback: Offer immediate feedback to user actions (e.g., form submissions, button clicks).
+4.Color Schemes and Font Sizes:
+Color Scheme: Use a calming and supportive color palette, such as soft blues, greens, and neutrals.
+Font Sizes: Ensure readable font sizes with larger headings for emphasis (e.g., 16px for body text, 24px for headings).
+5.Specific UI Elements:
+Home Page:
+Navigation Menu: Positioned at the top, with links to Home, Report Incident, Support Services, Resources, and Contact Us.
+Hero Section: Welcoming message and overview of the system.
+Login/Sign-up Buttons: Prominently placed for easy access.
+Report Incident Page:
+Form Fields: Include text areas, date/time pickers, location input fields, and optional witness details.
+Submit Button: Located at the bottom of the form.
+Save as Draft Button: Optional, allows users to save their report to complete later.
+Support Services Page:
+Service Categories: Displayed as cards or list items.
+Service Listings: Detailed listings with contact information.
+Resources Page:
+Articles and Guides: Displayed in a searchable and filterable list.
+Search Bar: Positioned at the top for easy access.
+6.Admin Interface:
+Dashboard: Centralized overview of all activities and reports.
+Report Management: Interface for reviewing and managing incident reports.
+User Management: Interface for managing user accounts.
+Resource Management: Interface for managing support resources
+3.1.4 Communication Interface
+Communication Channels
+Mobile App Interface
+Users primarily interact with the system through a mobile application.
+Supports secure text-based reporting.
+Provides real-time notifications.
+SMS Integration
+Available as a backup for users with limited internet access
+Uses encrypted messages (if possible).
+Ensures sensitive data is masked to prevent exposure.
+Direct call features for immediate support.
+Connects users with crisis respondents when needed.
+Security Protocols
+End-to-End Encryption
+Ensures all messages and data shared through the systems are encrypted.
+Secures sensitive information
+Anonymity Options
+Allows users to report incidents anonymously.
+Masks their identity to protect privacy.
+Accessibility and Usability
+Simple Interface
+Straightforward, intuitive design for easy communication,even under stress.
+Clear icons and large buttons for quick access.
+Multi-Language Support
+Provides language options relevant to the user base.
+Ensures comfortable interaction for all users.
+Functional Requirements
+Functional requirements describe what a system is supposed to do. These are the specific behaviors or functions of a system. Think of them as a detailed breakdown of the tasks or services that the system needs to perform.
+It is like a to-do list for a software system. They outline everything the system should be able to do to meet user needs.
+Functional Requirement: Signing Up
+Table 2 :FR-01-Creat profile
+Attribute
+Detail
+FR_ID
+FR-01
+Description
+The system should allow users to create an account for reporting and accessing support services.
+Summary
+The system should register new users in its database
+Dependency
+None
+References
+None
+Priority
+High (since user registration is critical to accessing other services)
+Precondition
+The user must provide valid information (e.g., email, password) required for registration
+Post-condition
+A new user account is created and saved in the system database, and the user receives a confirmation message.
+Actors
+New users (individuals seeking to register for support services)
+Assumptions
+Users will have access to the required device and internet connectivity to create an account.
+Acceptance Criteria
+The account creation form should validate user inputs, store data securely, and send confirmation to users.
+Error Handling
+If required fields are missing or invalid, the system should display appropriate error messages.
+Functional Requirement: logging in
+Table 3: FR-02-Login
+Attribute
+Details
+FR_ID
+FR-02
+Description
+The system should allow users to sign in to access their accounts and previous reports.
+Summary
+The system should log in already registered users.
+Dependency
+Signing up should be done.
+Reference
+None
+Priority
+High (since login is required to access other services)
+Precondition
+The user must have a valid account with registered credentials
+Post-condition
+Users are logged in and granted access to their account and related features.
+Actors
+Registered users who wish to access their account.
+Assumption
+Users will remember their login credentials or reset them if forgotten
+Acceptance
+The login form should validate user credentials and provide feedback on successful/failed login.
+Error Handling
+If the login credentials are incorrect, display an error message and allow the user to try again or reset the password.
+Functional Requirement -Report Incident
+Table 4: FR-03-Report Incident
+Attribute
+Details
+FR-ID
+FR-03
+Description
+The system should allow users to report domestic violence incidents securely.
+Summary
+The system will enable users to submit detailed reports with options for anonymity, file uploads, and geolocation if enabled.
+Dependency
+Logging in should be done (unless anonymous).
+References
+None
+Priority
+High (important for users to be able to report incidents quickly)
+Precondition
+Users must be logged in (or choose to report anonymously).
+Post-condition
+Incident reports are submitted and stored securely.
+Actors
+Users who want to report incidents of domestic violence.
+Assumptions
+The user knows the details of the incident and has access to the necessary resources (e.g., camera, geolocation).
+Acceptance Criteria
+The system should allow the user to fill in a report, upload files, and submit it, with a confirmation message upon successful submission
+Error Handling
+If a required field is missing or if file upload fails, the system should notify the user and guide them to resolve the issue.
+Functional Requirement -Access Resources
+Table 5: FR-04-Access Resources
+Attribute
+Details
+FR_ID
+FR-04
+Description
+The system should provide access to support resources like emergency hot-lines, shelters, legal aid, and counseling services
+Summary
+The system will allow users to view available support resources for immediate help and guidance.
+Dependency
+None
+Reference
+None
+Priority
+Medium (important but not time-sensitive)
+Precondition
+The user must be logged in to access the resources.
+Post-condition
+The user can view and contact available resources.
+Actor
+Users seeking support resource
+Assumption
+The system has up-to-date contact information for resources.
+Acceptance Criteria
+The system should display a list of support resources, including contact details and location.
+Error Handling
+If a resource is unavailable or the contact information is incorrect, an error message should be displayed.
+Functional Requirement -Track Report Status
+Table 6: FR-05-Track Report Status
+Attribute
+Details
+FR_ID
+FR-05
+Description
+The system should allow users to view the current status of their report (e.g., under review, in progress, or resolved)
+Summary
+The system will provide users with updates on their report status.
+Dependency
+None
+Reference
+None
+Priority
+Medium (provides transparency, but not critical for system operation
+Precondition
+The user must have an active report to track.
+Post-condition
+The user can view the latest available status of their report.
+Actors
+Users who have submitted a report and wish to track its progress.
+Assumption
+The system will update report statuses at scheduled intervals or upon specific changes
+Acceptance Criteria
+The system should display the latest status update with a timestamp of the last update.
+Error Handling
+If the report status cannot be fetched, display an error message and allow the user to try again later
+Functional Requirement -Request Support
+Table 7: FR-06-Request Support
+Attribute
+Details
+FR_ID
+FR-06
+Description
+The system should allow users to request specific support, such as counseling or legal aid, for ongoing cases.
+Summary
+The system will enable users to request various forms of assistance as needed.
+Dependency
+Logging in should be done
+Reference
+None
+Priority
+High (ensures users get the help they need)
+Precondition
+The user must be logged in and have an active report.
+Post-condition
+A support request is submitted to the system
+Actors
+Users who require additional support for their case.
+Assumption
+Support resources (e.g., counselors, legal experts) are available
+Acceptance Criteria
+The system should allow users to specify the type of support needed and submit the request successfully.
+Error Handling
+If a request cannot be processed, the system should notify the user with an explanation
+Functional Requirement -View Case History
+Table 8: FR-07-View Case History
+Attribute
+Details
+FR_ID
+FR-07
+Description
+The system should allow authorized users (e.g., counselors or law enforcement) to view a user's case history to provide better support
+Summary
+Authorized personnel can access past reports and actions taken to aid in current support
+Dependency
+Logging in should be done; appropriate permissions required.
+Reference
+None
+Priority
+Medium (important for case management but requires appropriate authorization)
+Precondition
+The user must have appropriate permissions to view case history
+Post-condition
+Authorized users can view a detailed history of the case.
+Actors
+Authorized personnel (e.g., counselors, law enforcement)
+Assumption
+The system has secure authentication and authorization mechanisms in place.
+Acceptance Criteria
+The system should display the user's case history, including all reports, actions, and updates.
+Error Handling
+If the user does not have appropriate permissions, the system should deny access and show an error message.
+Functional Requirement - Edit Profile
+Table 9: FR-08-Edit Profile
+Attribute
+Details
+FR_ID
+FR-08
+Description
+The system should allow users to edit their account/profile information as needed.
+Summary
+Users can update their personal details and contact information.
+Dependency
+Logging in should be done
+Reference
+None
+Priority
+Medium (important for user convenience and data accuracy)
+Precondition
+The user must be logged in to access their profile settings.
+Post-condition
+Updated profile information is saved to the database, and the user is notified of successful changes
+Actors
+Registered users who wish to update their profile information.
+Assumption
+Users will have internet access and sufficient permissions to edit their own profiles.
+Acceptance Criteria
+The system should save changes made to profile information, display a success confirmation, and provide an error message if required fields are incomplete or invalid.
+Error Handling
+If any mandatory fields are missing or contain invalid data, the system should display an error message and prevent saving until corrected.
+Functional Requirement -Administrator Access
+Table 10: FR-09-Administrator Access
+Attribute
+Details
+FR_ID
+FR-09
+Description
+The system should allow administrators to manage users, data, and oversee system functionality
+Summary
+Administrators can add, edit, or delete user accounts, view system reports, and ensure data security.
+Dependency
+Logging in with admin credentials should be done
+Reference
+None
+Priority
+High (essential for system management and security)
+Precondition
+The administrator must be logged in with valid admin credentials.
+Post-condition
+Authorized administrators can make changes to user accounts, view system activity, and manage overall system settings securely.
+Actors
+System administrators responsible for managing users and maintaining data security.
+Assumption
+Administrators have the necessary permissions and access rights to perform system management tasks.
+Acceptance Criteria
+The system should permit authorized administrators to add, update, or remove user accounts, access system reports, and modify settings securely.
+Error Handling
+If unauthorized users attempt to access admin functionalities, the system should restrict access and log the event.
+Use Case
+A use case is a detailed description that outlines how people interact with a system. It captures the specific steps and actions that users take to accomplish a particular task, along with how the system responds at each step. This helps everyone involved in building the system understand what needs to be done and ensures that all user needs are met. By breaking down the process into simple, relatable scenarios, use cases make it easy for both technical and non-technical people to see how the system should work and identify any potential issues early on.
+Figure 1: Use Case for SafeHaven platform
+User Logs Into App
+The user begins by logging into the application. If they are a new user, they start by signing up, which involves entering their user information, submitting this information, and having it validated and confirmed by the system. A confirmation email is then sent to the user, who needs to verify their email address. For existing users, the login process involves entering their email and password, submitting the login details, and having the credentials validated by the system to access the dashboard. The profile management section allows users to update their personal information and preferences, save changes, and receive a confirmation message.
+Report Incident
+When reporting an incident, the user fills in the incident details, including the type of violence, location, time, and description. The user then submits the report, which the system verifies and confirms by sending a confirmation message. The system also provides real-time updates on the case status and next steps. The report is then sent to the appropriate authorities or support team. Throughout this process, the user receives updates on the case status and the next steps to take.
+Request Support
+For requesting support, the user selects their preferred support option, such as chatting with a counselor. The system then connects the user with a support staff member, who provides real-time guidance and resources. If no support staff are available, the system notifies the user and provides emergency contact information or resources. In cases where immediate emergency help is needed, the system contacts emergency services directly.
+View Dashboard
+The dashboard allows users to view the status of their reports and support requests. Users can also see recent activities related to their cases and receive real-time notifications and updates on the dashboard. This feature provides a comprehensive overview of all interactions and case statuses, ensuring that users are kept informed.
+Admin Functions
+Admin functions include managing users, reviewing user activity, searching and reviewing users, monitoring the system, saving changes, and logging out. These functions help maintain the overall system and ensure that user activities are monitored and managed effectively.
+Support Staff Functions
+Support staff functions involve accessing the dashboard, responding to incident reports, connecting with victims, reviewing and managing support requests, providing guidance and resources, and logging out. These functions enable support staff to efficiently assist victims and manage their support needs.
+3.3.1 Signing Up
+Table 11: UC01-Signing Up
+ID
+UC-01
+Name
+Sign Up((including Request Support Service)
+Actor(s)
+Victim
+Description
+Process of a new user signing in, reporting an incident, and requesting support services.
+Precondition
+User has access to the web app and a stable internet connection.
+Main Success Scenario
+User opens the app and clicks on "Sign In".
+System prompts users to enter required information (e.g., name, email, incident details, support service required, evidence).
+User fills in the details and submits the form.
+System validates the information (e.g., checks if email is unique).
+5. System creates the account, processes the report, and sends a confirmation email. User verifies their email address through a confirmation link.
+Extensions (Error Scenarios)
+2a. Validation Error: If the email is already in use, the system shows an error message.
+2a.1 System returns user to the sign-in screen.
+2a.2 User retries or provides a different email.
+5a. Email Not Verified: If the email verification fails, the system prompts the user to try again.
+post-conditions
+User account is created.
+2. User report and support service request are submitted and receives a confirmation email.
+3.3.2 Login Page
+Table 12: UC02-Login Page
+ID
+UC-02
+Name
+Login Page
+Actor(s)
+Victim
+Description
+Process of a user logging into their account.
+Precondition
+User has already signed up and has a valid account.
+Main Success Scenario
+User opens the app and clicks on "Log In".
+System prompts users to enter their email and password.
+User fills in the credentials and submits the form.
+System validates the credentials.
+5. If valid, the user is logged into the app.
+Extensions (Error Scenarios)
+2a. Incorrect Credentials: If the credentials are incorrect, the system shows an error message.
+2a.1 System returns user to login screen.
+2a.2 User retries or clicks "Forgot Password" to reset it.
+post-conditions
+User is logged into the app.
+2. System provides access to the user's dashboard.
+3.3.3 View Victim Dashboard
+Table 13: UC03-View Victim Dashboard
+ID
+UC-03
+Name
+View Victim Dashboard
+Actor(s)
+Victim, NGO Support Staff, Arada Bureau Women and Children Affairs Staff
+Description
+Provides an overview of the victim's reports, case statuses, and support requests.
+Precondition
+1.User is logged into the web app.
+2.User has previously reported an incident or requested support.
+Main Success Scenario
+User logs into the app.
+System displays dashboard with recent activity.
+User can view the status of their reports and requests.
+4. User receives updates and notifications on the dashboard.
+Extensions (Error Scenarios)
+None
+post-conditions
+User has an up-to-date overview of their interactions with the system
+3.3.4 Provide Feedback
+Table 14: UC04-Provide Feedback
+ID
+UC-04
+Name
+Provide Feedback
+Actor(s)
+Victim, NGO Support Staff, Arada Bureau Women and Children Affairs Staff
+Description
+Process of providing feedback about the system.
+Precondition
+User is logged into the system.
+Main Success Scenario
+User navigates to the feedback section.
+System displays a feedback form.
+User fills in the feedback form and submits it.
+4. System acknowledges the feedback submission.
+post-conditions
+Feedback is submitted and recorded in the system.
+3.3.5 View Sign In Report
+Table 15: UC05-View Sign In Report
+ID
+UC-05
+Name
+View Sign In Report
+Actor(s)
+NGO Support Staff, Arada Bureau Women and Children Affairs Staff
+Description
+Process of viewing the sign-in report submitted by the victim.
+Precondition
+Victim has submitted a sign-in report.
+Main Success Scenario
+Support staff logs into the system.
+System displays the list of sign-in reports.
+3. Support staff selects a report to view its details.
+4. System displays the detailed report, including any submitted evidence.
+Post Conditions
+Support staff views the detailed sign-in report.
+3.3.6 Provide Support
+Table 16: UC06-Provide Support
+ID
+UC-06
+Name
+Provide Support
+Actor(s)
+NGO Support Staff
+Description
+Process of providing support to the victim based on the sign-in report.
+Precondition
+Victim has requested support services in the sign-in report.
+Main Success Scenario
+Support staff logs into the system.
+Support staff views the detailed report.
+Support staff provides the required support.
+4. System updates the support status.
+post-conditions
+Support is provided to the victim and status is updated in the system.
+3.4 Non-Functional Requirements
+3.4.1 Performance
+Concurrent Users: The system must effectively handle multiple users simultaneously without experiencing latency. It should be capable of supporting concurrent users during peak operation hours.
+Response Time: Aim for a consistent response time of less than 10 seconds under normal operating conditions to ensure a seamless and efficient user experience. This includes quick load times for reports and support requests.
+Notification Delay: Minimize delays for notifications and messages to under 5 second. Notifications regarding incident updates, support replies, and system alerts should be instantaneous to enhance user engagement.
+Load Handling: The system should dynamically scale to handle increased loads during high traffic situations, prioritizing critical functions such as incident reporting and emergency assistance. Utilize load balancing techniques to manage server requests effectively.
+3.4.2 Reliability
+Uptime-Ensure: the system is available 90% of the time to maximize user accessibility and avoid potential lapses during critical reporting periods.
+Resilience: The system should recover quickly from minor outages with minimal impact on users, allowing for continuous processing and interaction. Implement automated recovery protocols that restore service within minutes.
+Error Logging and Monitoring: Comprehensive logging and monitoring systems should be established to capture errors and system performance metrics. This enables proactive identification of issues, facilitating faster response times from support teams.
+3.4.3 Availability
+24/7 Access: The system should be consistently available 24/7, enabling users to report incidents or access support at any time of day or night. This is crucial, particularly in emergency situations.
+Downtime Notifications: Users should be informed in advance about any planned downtime, including the expected duration and time of service resumes. Notifications should be sent via email and within the application to ensure users are adequately informed.
+Backup Systems: Establish robust redundant systems, including database and server fail over options, to maintain service availability during unplanned outages. Regularly test these backups to ensure functionality during emergencies.
+3.4.4 Security
+Data Encryption: All data transmissions should be encrypted using industry-standard protocols such as TLS to protect sensitive user information from potential threats. This includes data both in transit and at rest.
+Multi-Factor Authentication: Implement reliable multi-factor authentication (MFA) processes that require users to verify their identity through multiple means such as a text message code or authentication app to enhance account security.
+Privacy Compliance: Ensure strict adherence to privacy laws, such as GDPR and HIPAA, protecting user information and maintaining compliance with legal standards. Regular audits should be conducted to ensure ongoing compliance.
+Regular Security Audits: Schedule regular security assessments, vulnerability scans, and penetration testing to identify and mitigate potential threats. Utilize third-party security experts to conduct these assessments for an unbiased view.
+3.4.5 Maintainability
+Easy Updates: Design the system architecture for easy updates and bug fixes, enabling developers to implement changes without significant downtime or disruption to services. Automated testing should ensure stability post-update.
+Modular Code: Use a modular code structure and adhere to standard coding practices to simplify maintenance, promote re-usability, and enable collaborative development across teams. This allows for isolated updates and feature additions.
+Documentation: Maintain comprehensive documentation across all levels of the system development, including API definitions, user guides, and architectural decisions, to support future development, on boarding of new developers, and troubleshooting.
+3.4.6 Portability
+Device Compatibility: The application must perform seamlessly across multiple devices and operating systems, including recent versions of  iOS, Android, and web browsers. This includes ensuring a consistent user interface (UI) and experience (UX) across platforms.
+Wide Reach: Users should be able to access the system from various devices (smartphones, tablets, laptops, and desktops) without performance issues, enabling flexibility and convenience in reporting and support tasks.
+Cross-Browser Support: Ensure compatibility with major web browsers (such as Chrome, Firefox, Safari, and Edge) through rigorous testing. This aids in maximizing accessibility for web users and ensuring that no portion of the user base is excluded due to browser limitations.
+Localization: Support multiple languages and regional settings to cater to diverse user demographics, ensuring that language barriers do not impede access to reporting and support services.
+3.5  Inverse Requirements
+The domestic violence reporting and support system does not include the following:
+Limited Geographic Coverage
+Primarily Includes Organizations Located in the Capital City: The system focuses on resources and support services such as law firms, psychological clinics, and hospitals that are based in the capital city. Users outside this area may not find relevant local resources within the platform, at least for the time being. Additionally, the main database is planned to be kept in one sub-city, specifically the Arada Kefele Ketema Women and Child Office.
+Monolingual Support
+Not Multilingual: The platform is not designed to support multiple languages. Users who do not speak or understand the primary language of the system may find it challenging to navigate. Nevertheless, the system is designed to be easy to navigate and user-friendly, with familiar layouts and clear instructions to help users access and utilize the services effectively, even if they do not speak the language fluently.
+Lack of Real-Time Support
+No Real-Time Assistance: Users who report domestic violence may not receive immediate support because it takes time to authorize and start the work. The system is not equipped to provide instant service at the moment of reporting.
+Inability to Identify Fake Reports
+No Mechanism to Distinguish Genuine from Fake Reports: The system does not include means to verify whether a report is real or fake. As a result, there is no built-in functionality to differentiate between genuine and false reports.
+3.6  Design Constraints
+Privacy and Security Policies: User roles and permissions must comply with strict privacy policies to ensure sensitive data is accessible only to authorized personnel
+Robust encryption protocols and secure authentication methods are required to protect user data.
+Device Compatibility: The platform should be compatible with a wide range of devices, including smartphones, tablets, and desktop computers.
+Core functions (e.g., incident reporting, access to resources) must perform efficiently on mobile hardware, which may limit certain high-performance functionalities.
+Data Storage and Compliance: Storing user data and reports securely while complying with data protection regulations poses a significant challenge. Implementing data encryption and secure storage solutions that meet local and international laws is essential but can be complex and costly.
+Maintenance and Updates: The system should be designed for easy maintenance and updates, allowing for the seamless addition of new features or fixes without significant downtime. Ensuring this flexibility can be complex in a large-scale system.
+3.7  Logical Database Requirement
+3.7.1. User Table
+This table will store information about users who sign up for the platform and the reports they submit.
+Table 17: DB01-User Table
+ID
+DB-01
+User_id
+Unique identifier for the user
+Full_Name
+Full name of the user
+Email
+Email address of the user
+Password
+Encrypted password of the user
+Report
+Description of the incident reported by the user
+Service_needed
+Type of service the user needs (legal, counseling)
+Created_at
+Timestamp of when the user signed up
+3.7.2Support System Table
+This table will store information about the support organizations, including the status of issues and timestamps for reporting and resolving them.
+Table 18: DB02-Support System Table
+ID
+DB-02
+Org_id
+Unique identifier for the organization
+User_id
+Unique identifier for the user who reported the issue
+Organization
+Name of the organization
+Service
+Service provided by the organization
+Status
+Status of the issues (ongoing, resolved)
+Reported_at
+Timestamp of when the issues were reported
+Resolved_at
+Timestamp of when the issues were resolved(can be Null)
+3.7.3Arada Kefele Ketema Women and Child Office Issues Table
+This table will specifically store information about reported issues handled by the Arada Kefele Ketema Women and Child Office.
+Table 19: DB03-Arada Kefele Ketema Women and Child Office Issues Table
+ID
+DB-03
+Issue_id
+Unique identifier for the reported issue
+User_id
+Unique identifier of the user who reported it
+Issue_details
+Detailed description of the reported issue
+Status
+Current status of the issue (e.g., ongoing, solved
+Reported_at
+Timestamp of when the issue was reported
+Resolved_at
+Timestamp of when the issue was resolved (can be Null)
+The database structure of this system is designed to efficiently manage user data, reported issues, and support systems. The database comprises three main tables: the User Table, the Support Systems Table, and the Arada Kefele Ketema Women and Child Office Issues Table. These tables are interconnected to ensure seamless data flow and integrity.
+3.7  Other Requirements
+3.8.1.Training-related Requirements
+User Training:
+Develop online training materials, including user manuals, interactive tutorials, and training videos to help users navigate and utilize the platform effectively.
+Support Staff Training:
+Ensure that support staff  receive training on providing assistance through web-based platforms. This includes understanding the system's functionality, data privacy protocols, and handling sensitive information.
+Ongoing Training and Updates:
+Regularly update online training materials and conduct periodic virtual refresher courses to keep users and support staff informed about new features, system updates, and best practices.
+3.8.2.Packaging Requirements
+User Support:
+Providing detailed information about organizations, including their locations, working hours, and services offered, enabling users to visit in person and access the necessary support if they choose and are able to do so.
+Software Packaging:
+Since it is a web app, no physical packaging is required, and  it can be easily accessed by anyone using a web browser.
+3.8.3.Legal Requirements
+Copyrights and Licensing:
+All code, documentation, and intellectual property related to this software are the property of the development team and the allowed organizations.
+Compliance with Local Laws:
+Ensure that the web application adheres to local laws and regulations in the regions where it will be deployed. This includes regulations related to healthcare, legal assistance, and social services.
+4.Change Management Process
+Changes may be made to the project plan at any time, from the start to the finish, as a result of shifting goals or requirements. As a result, updating the project plan is inescapable in project management. Our team is prepared to accept and amend any changes necessary at any phase. When a change is anticipated, all team members will communicate in detail about the change and the rationale behind it. The proposed modification will then be discussed with the advisor if all team members agree.
+The process involves thoroughly documenting the change, including the name of the change, the person who initiates it, and the person assigned to manage it. Changes can only be made if all team members and advisors are in agreement. This ensures that all implications are considered and the project remains aligned with its goals.
+Once the change is agreed upon, it is implemented formally. This involves outlining the change, why it is required, and how it will be executed. The team documents all modifications made and ensures that they are feasible and practical. This structured approach to managing changes helps maintain the integrity of the project plan and ensures all team members are on the same page.
+REFERENCE
+1.GeeksforGeeks. "Software Requirement Specification (SRS) Format." GeeksforGeeks. Last modified September 20, 2023.
+2.Deo, John. "Recommended Practice for Software Requirements Specifications (IEEE)." Micori-global.com. Last modified December 29, 2011.
+APPENDICES
+Appendix I
+Observational Visit to Arada Kefele Ketema Women and Child Office
+As part of our preparatory research for the project, our team conducted an observational visit to the Arada Kefele Ketema Women and Child Office to gain insights into the existing systems and understand how people report their issues and how these issues are addressed. Our objective was to identify the current workflows, comprehend the operational challenges faced by the staff when interacting with clients, and gather requirements needed for the system from the perspective of the staff (the authorities there).
+Figure 2:Arada Kefele Ketema Women and Child Office.
+During the visit, we had the opportunity to converse with one of the authorities at the Arada Kefele Ketema Women and Child Office. Based on this conversation, we noted the following problems:
+Challenges in Providing Support: The office faces considerable challenges in assisting individuals who come to report incidents. Often, it is difficult even to cover the transportation costs for these individuals, which significantly hinders the overall support process.
+Difficulties in Establishing Connections with Legal Entities: Connecting reporters (individuals who report incidents) with the appropriate legal frameworks poses significant challenges. This connection is essential for providing the necessary assistance and ensuring that subsequent actions are effectively carried out.
+The challenges and difficulties observed during our visit have inspired us to develop a centralized system. This system will allow individuals to access the necessary services after a single sign-up. By creating a centralized platform, we aim to streamline the process, ensuring that individuals do not have to repeatedly provide their information and can efficiently access the services they need. This solution will not only improve the overall user experience but also enhance the coordination and effectiveness of the support provided by the office. By connecting individuals with the appropriate resources and legal frameworks through a unified system, we can address the issues more efficiently and ensure timely assistance for those in need.
+Appendix II
+Survey Data
+We conducted a survey involving different members of society to observe and gauge their insights and understanding about the issue, as well as to receive comments in order to make the system relatable and usable for them.
+From the survey, we observed that most people have experienced or know someone who has experienced domestic violence. Nevertheless, most of these individuals do not know how and where to report such incidents. Referring to the survey results, we found that the majority of respondents are comfortable reporting these incidents through a web application.
+The survey provided us with valuable insights, leading us to add educational content to the website. This content will inform users about the necessary steps to take and where to go in such situations, as well as how they can guide and assist victims of violence even if they do not personally experience it. Additionally, we included phone numbers and hot-lines of willing professionals for individuals who seek psychological support.
