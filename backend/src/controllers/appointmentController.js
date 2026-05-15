@@ -5,6 +5,12 @@ import { createNotification } from "../utils/notifications.js";
 export const createAppointment = async (req, res) => {
   try {
     const { service_type, appointment_date, notes } = req.body;
+    
+    // Validation: prevent scheduling in the past
+    if (new Date(appointment_date) < new Date()) {
+      return res.status(400).json({ message: "Cannot schedule appointments in the past." });
+    }
+
     const db = getDb();
     const appointment_id = uuidv4();
     const now = new Date().toISOString();

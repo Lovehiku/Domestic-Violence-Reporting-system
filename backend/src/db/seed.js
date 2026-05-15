@@ -6,9 +6,13 @@ export const seedDatabase = async () => {
   const db = getDb();
   try {
     const userCount = await db.get("SELECT COUNT(*) as count FROM users");
-    if (userCount.count > 0) return;
+    console.log(`Current user count: ${userCount?.count}`);
+    if (userCount && userCount.count > 0) {
+      console.log("Database already seeded, skipping...");
+      return;
+    }
 
-    const now = new Date().toISOString();
+    console.log("Seeding database...");
     const victimId = uuidv4();
     const staffId = uuidv4();
     const adminId = uuidv4();
