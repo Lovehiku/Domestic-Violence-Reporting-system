@@ -82,3 +82,16 @@ CREATE TABLE IF NOT EXISTS notifications (
   created_at TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS appointments (
+  appointment_id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  provider_id TEXT, -- Can be null if generic request
+  service_type TEXT NOT NULL,
+  appointment_date TEXT NOT NULL,
+  status TEXT NOT NULL CHECK(status IN ('pending','confirmed','cancelled','completed')),
+  notes TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);

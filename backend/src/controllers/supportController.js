@@ -1,92 +1,57 @@
-import { v4 as uuidv4 } from "uuid";
 import { getDb } from "../config/db.js";
-import { sanitizeBody } from "../utils/sanitize.js";
-import { createNotification } from "../utils/notifications.js";
+import { v4 as uuidv4 } from "uuid";
 
-export const requestSupport = async (req, res) => {
-  const db = getDb();
-  const body = sanitizeBody(req.body);
-  if (!body.support_type || !body.message) {
-    return res.status(400).json({ message: "Support type and message are required." });
-  }
+export const createSupportRequest = async (req, res) => {
+  try {
+    const { support_type, message, issue_id } = req.body;
+    const db = getDb();
+    const request_id = uuidv4();
+    const now = new Date().toISOString();
 
-  if (!body.issue_id) {
-    return res.status(400).json({ message: "Active report (issue_id) is required for support request." });
-  }
-  const issue = await db.get("SELECT issue_id, user_id FROM arada_kefele_ketema_women_child_office_issues WHERE issue_id = ?", [
-    body.issue_id
-  ]);
-  if (!issue) return res.status(404).json({ message: "Referenced report not found." });
-  if (req.user.role === "victim" && issue.user_id !== req.user.user_id) {
-    return res.status(403).json({ message: "You can only request support for your own report." });
-  }
+    await db.run(
+      "INSERT INTO support_requests (request_id, user_id, issue_id, support_type, message, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        request_id,
+        req.user.user_id,
+        issue_id || null,
+        support_type,
+        message,
+        "open",
+        now,
+        now,
+      ],
+    );
 
-  const now = new Date().toISOString();
-  const request = {
-    request_id: uuidv4(),
-    user_id: req.user.user_id,
-    issue_id: body.issue_id,
-    support_type: body.support_type,
-    message: body.message,
-    status: "open",
-    created_at: now,
-    updated_at: now
-  };
-  await db.run(
-    `INSERT INTO support_requests
-    (request_id, user_id, issue_id, support_type, message, status, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      request.request_id,
-      request.user_id,
-      request.issue_id,
-      request.support_type,
-      request.message,
-      request.status,
-      request.created_at,
-      request.updated_at
-    ]
-  );
-  await createNotification({
-    userId: req.user.user_id,
-    title: "Support Request Submitted",
-    message: `Support request ${request.request_id} has been sent.`,
-    type: "success"
-  });
-  res.status(201).json({ message: "Support request submitted.", request });
+    res.status(201).json({ message: "Support request sent", request_id });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-export const provideSupport = async (req, res) => {
-  const db = getDb();
-  const body = sanitizeBody(req.body);
-  const request = await db.get("SELECT * FROM support_requests WHERE request_id = ?", [req.params.requestId]);
-  if (!request) return res.status(404).json({ message: "Support request not found." });
-
-  const status = body.status || request.status;
-  if (!["open", "in_progress", "closed"].includes(status)) {
-    return res.status(400).json({ message: "Invalid support status." });
+export const getMySupportRequests = async (req, res) => {
+  try {
+    const db = getDb();
+    const requests = await db.all(
+      "SELECT * FROM support_requests WHERE user_id = ? ORDER BY created_at DESC",
+      [req.user.user_id],
+    );
+    res.json({ requests });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  const updatedAt = new Date().toISOString();
-  await db.run("UPDATE support_requests SET status = ?, updated_at = ? WHERE request_id = ?", [
-    status,
-    updatedAt,
-    req.params.requestId
-  ]);
-  await createNotification({
-    userId: request.user_id,
-    title: "Support Request Updated",
-    message: `Support request ${request.request_id} is now ${status}.`,
-    type: "info"
-  });
-  res.json({ message: "Support request updated successfully." });
 };
 
-export const listSupportRequests = async (req, res) => {
-  const db = getDb();
-  if (req.user.role === "victim") {
-    const rows = await db.all("SELECT * FROM support_requests WHERE user_id = ? ORDER BY created_at DESC", [req.user.user_id]);
-    return res.json({ support_requests: rows });
+export const getAllSupportRequests = async (req, res) => {
+  try {
+    const db = getDb();
+    const requests = await db.all(
+      `SELECT sr.*, u.full_name, u.email 
+       FROM support_requests sr 
+       JOIN users u ON sr.user_id = u.user_id 
+       ORDER BY sr.created_at DESC`,
+    );
+    res.json({ requests });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  const rows = await db.all("SELECT * FROM support_requests ORDER BY created_at DESC");
-  return res.json({ support_requests: rows });
 };

@@ -1,86 +1,121 @@
+import { getDb } from "../config/db.js";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
-import { getDb } from "../config/db.js";
-import { sanitizeBody, isValidEmail } from "../utils/sanitize.js";
 
 export const adminListUsers = async (_req, res) => {
-  const db = getDb();
-  const users = await db.all("SELECT user_id, full_name, email, role, phone, created_at, updated_at FROM users ORDER BY created_at DESC");
-  res.json({ users });
+  try {
+    const db = getDb();
+    const users = await db.all(
+      "SELECT user_id, full_name, email, role, phone, created_at FROM users ORDER BY created_at DESC",
+    );
+    res.json({ users });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const adminCreateUser = async (req, res) => {
-  const db = getDb();
-  const body = sanitizeBody(req.body);
-  const role = ["victim", "support_staff", "admin"].includes(body.role) ? body.role : "victim";
-  if (!body.full_name || !body.email || !body.password) {
-    return res.status(400).json({ message: "full_name, email, and password are required." });
+  try {
+    const { full_name, email, password, role, phone } = req.body;
+    const db = getDb();
+
+    const exists = await db.get("SELECT * FROM users WHERE email = ?", [email]);
+    if (exists)
+      return res.status(409).json({ message: "Email already exists." });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user_id = uuidv4();
+    const now = new Date().toISOString();
+
+    await db.run(
+      "INSERT INTO users (user_id, full_name, email, password, role, phone, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [user_id, full_name, email, hashedPassword, role, phone || "", now, now],
+    );
+
+    res.status(201).json({ message: "User created successfully.", user_id });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  if (!isValidEmail(body.email)) return res.status(400).json({ message: "Invalid email format." });
-  const exists = await db.get("SELECT user_id FROM users WHERE email = ?", [body.email.toLowerCase()]);
-  if (exists) return res.status(409).json({ message: "Email already exists." });
-  const now = new Date().toISOString();
-  const userId = uuidv4();
-  await db.run(
-    "INSERT INTO users (user_id, full_name, email, password, role, phone, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-    [userId, body.full_name, body.email.toLowerCase(), await bcrypt.hash(body.password, 10), role, body.phone || "", now, now]
-  );
-  res.status(201).json({ message: "User created successfully.", user_id: userId });
 };
 
 export const adminUpdateUser = async (req, res) => {
-  const db = getDb();
-  const body = sanitizeBody(req.body);
-  const existing = await db.get("SELECT * FROM users WHERE user_id = ?", [req.params.userId]);
-  if (!existing) return res.status(404).json({ message: "User not found." });
-  const role = body.role && ["victim", "support_staff", "admin"].includes(body.role) ? body.role : existing.role;
-  const fullName = body.full_name || existing.full_name;
-  const email = (body.email || existing.email).toLowerCase();
-  const phone = body.phone ?? existing.phone;
-  if (!isValidEmail(email)) return res.status(400).json({ message: "Invalid email format." });
-  await db.run("UPDATE users SET full_name = ?, email = ?, role = ?, phone = ?, updated_at = ? WHERE user_id = ?", [
-    fullName,
-    email,
-    role,
-    phone,
-    new Date().toISOString(),
-    req.params.userId
-  ]);
-  res.json({ message: "User updated successfully." });
+  try {
+    const { full_name, email, role, phone } = req.body;
+    const db = getDb();
+    const now = new Date().toISOString();
+
+    const result = await db.run(
+      "UPDATE users SET full_name = ?, email = ?, role = ?, phone = ?, updated_at = ? WHERE user_id = ?",
+      [full_name, email, role, phone || "", now, req.params.userId],
+    );
+
+    if (result.changes === 0)
+      return res.status(404).json({ message: "User not found." });
+    res.json({ message: "User updated successfully." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const adminDeleteUser = async (req, res) => {
-  const db = getDb();
-  const result = await db.run("DELETE FROM users WHERE user_id = ?", [req.params.userId]);
-  if (!result.changes) return res.status(404).json({ message: "User not found." });
-  res.json({ message: "User deleted successfully." });
+  try {
+    const db = getDb();
+    const result = await db.run("DELETE FROM users WHERE user_id = ?", [
+      req.params.userId,
+    ]);
+    if (result.changes === 0)
+      return res.status(404).json({ message: "User not found." });
+    res.json({ message: "User deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const adminListReports = async (_req, res) => {
-  const db = getDb();
-  const reports = await db.all("SELECT * FROM arada_kefele_ketema_women_child_office_issues ORDER BY reported_at DESC");
-  res.json({ reports });
+  try {
+    const db = getDb();
+    const reports = await db.all(
+      `SELECT r.*, u.full_name, u.email 
+       FROM arada_kefele_ketema_women_child_office_issues r 
+       LEFT JOIN users u ON r.user_id = u.user_id 
+       ORDER BY r.reported_at DESC`,
+    );
+    res.json({ reports });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const adminUpdateReport = async (req, res) => {
-  const db = getDb();
-  const body = sanitizeBody(req.body);
-  const existing = await db.get("SELECT issue_id FROM arada_kefele_ketema_women_child_office_issues WHERE issue_id = ?", [
-    req.params.issueId
-  ]);
-  if (!existing) return res.status(404).json({ message: "Report not found." });
-  const allowed = ["under_review", "in_progress", "resolved", "ongoing", "solved"];
-  const status = allowed.includes(body.status) ? body.status : "under_review";
-  await db.run(
-    "UPDATE arada_kefele_ketema_women_child_office_issues SET status = ?, updated_at = ?, resolved_at = CASE WHEN ? IN ('resolved','solved') THEN ? ELSE resolved_at END WHERE issue_id = ?",
-    [status, new Date().toISOString(), status, new Date().toISOString(), req.params.issueId]
-  );
-  res.json({ message: "Report updated successfully." });
+  try {
+    const { status } = req.body;
+    const db = getDb();
+    const now = new Date().toISOString();
+
+    const result = await db.run(
+      "UPDATE arada_kefele_ketema_women_child_office_issues SET status = ?, updated_at = ? WHERE issue_id = ?",
+      [status, now, req.params.issueId],
+    );
+
+    if (result.changes === 0)
+      return res.status(404).json({ message: "Report not found." });
+    res.json({ message: "Report updated successfully." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const adminDeleteReport = async (req, res) => {
-  const db = getDb();
-  const result = await db.run("DELETE FROM arada_kefele_ketema_women_child_office_issues WHERE issue_id = ?", [req.params.issueId]);
-  if (!result.changes) return res.status(404).json({ message: "Report not found." });
-  res.json({ message: "Report deleted successfully." });
+  try {
+    const db = getDb();
+    const result = await db.run(
+      "DELETE FROM arada_kefele_ketema_women_child_office_issues WHERE issue_id = ?",
+      [req.params.issueId],
+    );
+    if (result.changes === 0)
+      return res.status(404).json({ message: "Report not found." });
+    res.json({ message: "Report deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
