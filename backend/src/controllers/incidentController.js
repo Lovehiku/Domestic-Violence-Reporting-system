@@ -7,6 +7,7 @@ export const createIncident = async (req, res) => {
       incident_type,
       issue_details,
       location,
+      witness_info,
       service_needed,
       urgency,
       is_anonymous,
@@ -17,8 +18,8 @@ export const createIncident = async (req, res) => {
 
     await db.run(
       `INSERT INTO arada_kefele_ketema_women_child_office_issues 
-      (issue_id, user_id, issue_details, status, reported_at, incident_type, service_needed, location, is_anonymous, updated_at) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (issue_id, user_id, issue_details, status, reported_at, incident_type, service_needed, location, witness_info, urgency, is_anonymous, updated_at) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         issue_id,
         is_anonymous ? null : req.user.user_id,
@@ -28,6 +29,8 @@ export const createIncident = async (req, res) => {
         incident_type,
         service_needed,
         location,
+        witness_info || "",
+        urgency || "medium",
         is_anonymous ? 1 : 0,
         now,
       ],

@@ -34,6 +34,8 @@ CREATE TABLE IF NOT EXISTS arada_kefele_ketema_women_child_office_issues (
   incident_type TEXT NOT NULL,
   service_needed TEXT,
   location TEXT,
+  witness_info TEXT,
+  urgency TEXT CHECK(urgency IN ('low','medium','high')),
   is_anonymous INTEGER NOT NULL DEFAULT 0,
   file_reference TEXT,
   updated_at TEXT NOT NULL,
@@ -47,7 +49,8 @@ CREATE TABLE IF NOT EXISTS resources (
   phone TEXT,
   location TEXT,
   description TEXT NOT NULL,
-  is_active INTEGER NOT NULL DEFAULT 1
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS support_requests (
